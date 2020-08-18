@@ -37,6 +37,21 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/catch.gif">
 <meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/promiseresolve.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/promiseeventloop.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/micro.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/micro2.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev1.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev3.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev2.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev4.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev5.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ev6gif.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/async1.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/async2.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/await1.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/await2.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/await3.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/await4.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/await6.gif">
 <meta property="article:published_time" content="2020-07-05T04:00:00.000Z">
 <meta property="article:modified_time" content="2020-07-05T04:00:00.000Z">
 <meta name="twitter:card" content="summary">
@@ -241,9 +256,9 @@
 <ul>
 <li>✅ <code>fullfilled</code>: Promise已经<code>resolved</code>，没有错误发生🥳</li>
 <li>❌ <code>rejected</code>  :Promise已经<code>rejected</code>，出现了错误</li>
-<li>⏳ <code>pending</code>   :Promise没有被resolved也没有被rejected，处在“等待”的状态</li>
+<li>⏳ <code>pending</code>  :Promise没有被resolved也没有被rejected，处在“等待”的状态</li>
 </ul>
-<p>在上面的示例中，我们直接给Promise的构造函数传了一个回调函数<code>()=&gt;{}</code>，实际上promise接受两个参数arguments。第一个参数是<code>resolve</code>这个方法是Promise应该被resolve时才触发的，与之相反的另外一个是<code>reject</code>当Promise被reject时触发。 如下图所示</p>
+<p>在上面的示例中，我们直接给Promise的构造函数传了一个回调函数<code>()=>{}</code>，实际上promise接受两个参数arguments。第一个参数是<code>resolve</code>这个方法是Promise应该被resolve时才触发的，与之相反的另外一个是<code>reject</code>当Promise被reject时触发。 如下图所示</p>
 <div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/duen4peq0bdr55cka5ya.png" class title="图片信息描述"></div>
 
 <p>好！我们现在可以摆脱Promise的<code>pending</code>状态和最后Promise的输出结果是<code>undefined</code>的状态了。当然这里要注意，这里Promise最后的值(<code>[[PromiseValue]]</code>)是我们直接传递给res和rej方法的，如下图所示</p>
@@ -276,7 +291,7 @@
 <div style=" width:20%;margin:0 auto;color:grey">————————</div>
 
 
-<h2 id="Microtasks和（Macro）tasks"><a href="#Microtasks和（Macro）tasks" class="headerlink" title="Microtasks和（Macro）tasks"></a>Microtasks和（Macro）tasks</h2><p>我们对于Promise已经有了一定的了解，包括怎么怎么创建一个Promise还有怎么从一个Promise中获取值。看以下代码</p>
+<h2 id="Microtasks和（Macro）tasks"><a href="#Microtasks和（Macro）tasks" class="headerlink" title="Microtasks和（Macro）tasks"></a>Microtasks和（Macro）tasks</h2><p>我们对于Promise已经有了一定的了解，包括怎么怎么创建一个Promise，还有怎么从一个Promise中取值。那么看以下代码</p>
 <div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/promiseeventloop.gif" class title="图片信息描述"></div>  
 
 <p>WTF?</p>
@@ -284,7 +299,117 @@
 <div style=" width:20%;margin:0 auto;color:grey">————————</div>
 
 <p>等等，我们在<a>译(一)JavaScript可视化：事件循环EventLoop</a>一文中，我们不也可以使用浏览器原生的方法，例如<code>setTimeout</code>来实现异步吗？</p>
-<p>Bingo!事实上，在事件循环EventLoop中，我们有两种类型的队列：<strong>(宏)任务队列</strong> <strong>(Macro)task queue</strong>和<strong>微任务队列**</strong>microtask queue<strong>。两种类型的队列分别对应着</strong>(宏)任务<strong>和</strong>微任务**，有关宏任务和微任务可以看下面的表格</p>
+<p>Bingo!事实上，在事件循环EventLoop中，我们有两种类型的队列：<strong>(宏)任务队列</strong> <strong>(Macro)task queue</strong>和<strong>微任务队列</strong><strong>microtask queue</strong>。两种类型的队列分别对应着<strong>(宏)任务</strong>和<strong>微任务</strong>，有关宏任务和微任务的具体种类如下：</p>
+<table>
+  <tbody><tr>
+    <td>
+        (Macro)task
+    </td>
+     <td>
+         <code>setTimeout</code> | <code>setInterval</code> | <code>setImmediate</code>
+     </td>
+     </tr>
+     <tr>
+     <td>
+         Microtask
+     </td>
+      <td>
+          <code>process.nextTick</code> | <code>Promise callback</code> | <code>queueMicrotask</code>
+      </td>
+ </tr>
+</tbody></table>
+
+<p>我们可以看到&lt;/、code&gt;Promise在微任务的分类里，当一个Promise被resolve并且调用了它<code>then()</code>、<code>catch()</code>、<code>finally()</code>的时候，他们会被添加到微任务队列中，这就意味着这些带有<code>then()</code>、<code>catch()</code>、<code>finally()</code>的回调函数不会立即执行，这就是为什么Promise可以用来做异步的原因</p>
+<p>那么，什么时候执行带有<code>then()</code>、<code>catch()</code>、<code>finally()</code>的回调函数呢？事件循环机制给不同的task有不同的优先级：</p>
+<ol>
+<li>所有当前正在call stack调用栈中执行的函数执行完毕。当他们return返回一个值的时候，他们会被推出栈。</li>
+<li>当call stack调用栈为空的时候，所有在微任务队列MicroTask中的微任务会被一个一个推入call stack调用栈执行(此时，MicroTask微任务背身也有可能return出新的微任务，有可能造成无限的微任务循环<strong>infinite microtask loop)</strong></li>
+<li>当目前的call stack和microtask queue都为空的时候，事件循环机制会检查是否有任务留在宏任务队列(Macro)task queue中，遗留下来的宏任务会被推入call stack调用栈——&gt;执行——&gt;推出</li>
+</ol>
+<div style="width:20%;margin:0 auto;color:grey">————————</div>
+<code></code><code></code>
+
+<p>好吧，说起来有点复杂。我们来看一个简单的例子</p>
+<ul>
+<li><p><code>Task1</code>在JS被执行的时候立即添加到了队列里</p>
+</li>
+<li><p><code>Task2</code> <code>Task3</code> <code>Task4</code>：微任务，例如是一个Promise的then方法，或者是一个使用<code>queueMicrotask</code>添加到队列里的任务</p>
+</li>
+<li><p><code>Task5</code> <code>Task6</code>：宏任务，例如<code>setTimeout</code>或者<code>setImmediate</code>回调函数</p>
+</li>
+</ul>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/micro.gif" class title="图片信息描述"></div>  
+
+<p>首先，Task1被执行完成，然后呢浏览器引擎检查微任务队列，当微任务队列里所有的任务被执行完并且推出后，浏览器检查宏任务队列。然后把它压进call stack中。最后所有任务执行完毕</p>
+<p>…<br>太啰嗦了，我们来看点真正的代码吧！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/micro2.png" class title="图片信息描述"></div>  
+
+<p>在上面这份代码中，我们有宏任务<code>setTimeout</code>，微任务promise回调函数<code>.then()</code>,下面我们将一步一步分析代码。</p>
+<blockquote>
+<p>值得注意的是，这里为了方便演示概念，我们使用<code>console.log</code>、<code>setTimeout</code>、<code>Promise.resolve</code>。这些内部的方法实际上不会出现在callstack中，所以当你在使用的debugger的时候如果没看到他们的话，请不要感到困惑🙂</p>
+</blockquote>
+<p>为了方便读者理解，下面的文章中关键概念统一使用英文</p>
+<ul>
+<li>call stack 调用栈</li>
+<li>MicroTask 微任务 / MicroTask queue微任务队列</li>
+<li>MacroTask 宏任务 / MacroTask queue(宏)任务队列</li>
+</ul>
+<p>第一步，浏览器引擎遇到了<code>console.log</code>,他会直接被添加到call stack中，同时在控制台打印出Start！执行完毕后，浏览器引擎将他推出call stack，此时call stack清空</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev1.gif" class title="图片信息描述"></div>  
+代码继续运行，遇到了<code>setTimeout</code>。<code>setTimeout</code>是浏览器的原生方法：它的callback回调函数<code>(()=>console.log('In timeouot'))</code>将会被添加到WEB API队列中，直到计时器到期。虽然我们给计时器设置的时间是0，<strong>他依然被浏览器引擎push到WEB API中</strong>，随后被添加到MacroTask queue。
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev3.gif" class title="图片信息描述"></div>
+接下来，浏览器遇到了<code>Promise.resolve()</code>方法。他的<code>then</code>回调函数被添加到micro queue中
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev2.gif" class title="图片信息描述"></div>
+最后代码执行到最后，遇到<code>console.log('End!')</code>，压入call stack直接执行，随后被推出。
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev4.gif" class title="图片信息描述"></div>
+
+<p>此时，call stack是空的，浏览器引擎会从microtask queue中寻找任务，并把它压到call stack中。<code>.then()</code>函数接收到<code>Promise.resolve</code>中的参数，在控制台上打印出Promise！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev5.gif" class title="图片信息描述"></div>
+
+<p>清空了microtask queue后(当然此时call stack也是空的)，我们终于要检查MacroTask queue了。<code>setTimeout</code>被压到call stack中，打印出Timeout！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev6gif.gif" class title="图片信息描述"></div>
+
+<p>至此，一次完整的事件循环结束</p>
+<div style="width:20%;margin:0 auto;color:grey">————————</div>
+
+<p>##Async/Await</p>
+<p>ES7引入了一个解决在JavaScript中实现异步的新办法使得使用promise更简单，这就是我们要介绍的<code>async</code>和<code>await</code>关键词。回顾之前，要记得我们之前使用<code>new Promise(() => {})</code><code>Promise.resolve</code>或者是<code>Promise.reject</code>创建的promise。</p>
+<p>现在，我们可以在function前面使用async关键词直接返回一个promise。不必再写promise</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/async1.png" class title="图片信息描述"></div>
+
+<p>但是，async真正的威力是在await关键字，他能暂停异步函数的执行直到await后面的值返回一个是resolved状态的promise。如果我们想要拿到这个resolve promise的值(指被async包裹的整个关键词)，就像我们之前使用.then方法那样。我们可以通过给await后面的的变量直接赋成promise.resolved来实现</p>
+<p>说起来有点抽象了，那来看个代码吧！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/async2.gif" class title="图片信息描述"></div>
+
+<p>WTF again?</p>
+<div style="width:20%;margin:0 auto;color:grey">————————</div>
+首先，浏览器引擎遇到了console.log('Before function')，推到call stack中，执行完毕后清空call stack。这点毫无疑问，因为虽然定义了myFunc()但是并没有执行
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await1.gif" class title="图片信息描述"></div>
+
+<p>然后，浏览器引擎碰到myFunc,执行myFunc。在myFunc函数体内部，我们遇到了另外一个<code>console.log('In function')</code>，推到call stack中，打印输出。<strong>这里请注意，await会阻塞后面的代码执行，但是不会阻塞await关键词前面的代码执行。所以会直接console.log输出</strong></p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await2.gif" class title="图片信息描述"></div>
+好，myFunc函数继续执行。在第二行我们终于见到了<code>await</code>关键词🎉
+
+
+<p>好！代码运行到这里，我们的callstack中有myfunc()，<strong>浏览器会先执行await关键词后面的代码！！碰到one(),会执行one()！！这里很重要！！注意看图！！</strong> 因为下面的代码被await阻塞(suspend)。浏览器引擎把myFunc剩下的部分压入到microtask queue中，注意这里，是微任务队列，而不是task queue。</p>
+<blockquote>
+<p>附上原文：<br>The first thing that happens is that the value that gets awaited gets executed: the function one in this case. It gets popped onto the call stack, and eventually returns a resolved promise. Once the promise has resolved and one returned a value, the engine encounters the await keyword.</p>
+</blockquote>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await3.gif" class title="图片信息描述"></div>
+
+<p>现在呢，浏览器遇到await关键词，浏览器引擎跳出整个async function(总不能一直suspend别人不让走吧)，执行下面的代码。注意这里的代码是全局代环境下的代码！！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await4.gif" class title="图片信息描述"></div>
+
+<p>最后呢，我们现在把callstack清空了，浏览器引擎会继续按照callstacl–&gt;microtask queue–&gt;task queue的顺序来检查任务队列，myFunc剩余的部分就被推到callstack中执行了。打印出one！</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await6.gif" class title="图片信息描述"></div>
+
+<p>好吧，终于结束了！注意到<code>async funcitons</code>和promise<code>.then()</code>在处理异步时候的区别了吗？<code>async funcitons</code>在使用<code>await</code>关键词的时候会阻塞代码的执行，promise<code>.then()</code>则不会</p>
+<p>希望读者以后在处理JavaScript异步编程的时候可以少一点”unexpected” or “unpredictable” 的错误哦~</p>
+<div style="width:20%;margin:0 auto;color:grey">————————</div>
+
+
+<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>最后来看道面试题吧，请问下面的代码输出结果是什么？ </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 start'</span>) </span><br><span class="line">    <span class="keyword">await</span> async2()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 end'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async2'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)   </span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line">async1()</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">    resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br><span class="line"></span><br><span class="line">_______________答案______________</span><br><span class="line"><span class="number">1.</span> script start  ---</span><br><span class="line"><span class="number">2.</span> async1 start  ---遇到async1() 执行函数体内的代码.</span><br><span class="line"><span class="number">3.</span> async2        ---执行async2()后，碰到<span class="keyword">await</span>，跳出到全局环境，把剩余代码压入微任务队列</span><br><span class="line"><span class="number">4.</span> promise1      ---碰到<span class="built_in">Promise</span>.resolved，直接输出，把then压入微任务队列</span><br><span class="line"><span class="number">5.</span> script end    ---最后一行全局task执行完毕</span><br><span class="line"></span><br><span class="line"><span class="comment">//此时callstack被清空</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//浏览器引擎查找微任务队列</span></span><br><span class="line"><span class="number">1.</span> async1 end    </span><br><span class="line"><span class="number">2.</span> promise2 </span><br><span class="line"></span><br><span class="line"><span class="comment">//清空微任务队列</span></span><br><span class="line"><span class="comment">//尝试触发dom渲染，执行宏任务</span></span><br><span class="line"></span><br><span class="line"><span class="number">8.</span> setTimeout</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -365,7 +490,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-语法"><span class="nav-number">2.</span> <span class="nav-text">Promise 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microtasks和（Macro）tasks"><span class="nav-number">3.</span> <span class="nav-text">Microtasks和（Macro）tasks</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-语法"><span class="nav-number">2.</span> <span class="nav-text">Promise 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microtasks和（Macro）tasks"><span class="nav-number">3.</span> <span class="nav-text">Microtasks和（Macro）tasks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End"><span class="nav-number">4.</span> <span class="nav-text">End</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
