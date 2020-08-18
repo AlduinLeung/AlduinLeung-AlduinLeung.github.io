@@ -20,19 +20,27 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","display_updated":true,"padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="本文翻译自技术社区dev.to，原作者Lydia Hallie。原文链接：https:&#x2F;&#x2F;dev.to&#x2F;lydiahallie&#x2F;javascript-visualized-promises-async-await-5gke Introduction当我们在写JavaScript的时候，我们经常会遇到要处理一些任务嵌套的问题，比如当前的任务要依赖另外一个任务才可以继续，可以看这样一个例子，我们要拿到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="译(七) JavaScript可视化：Promise &amp; Async&#x2F;Await">
 <meta property="og:url" content="http://yoursite.com/2020/07/05/Promise/index.html">
 <meta property="og:site_name" content="Alduinleung&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="本文翻译自技术社区dev.to，原作者Lydia Hallie。原文链接：https:&#x2F;&#x2F;dev.to&#x2F;lydiahallie&#x2F;javascript-visualized-promises-async-await-5gke Introduction当我们在写JavaScript的时候，我们经常会遇到要处理一些任务嵌套的问题，比如当前的任务要依赖另外一个任务才可以继续，可以看这样一个例子，我们要拿到">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/79zi452hphe7ecylhozy.gif">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png">
-<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/duen4peq0bdr55cka5ya.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/z0b9v0h7aiq073l5tl2l.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/loadImg.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/wsu5nn26dp4elcwh764m.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/getfileres.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/then.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/catch.gif">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/promiseresolve.png">
+<meta property="og:image" content="http://yoursite.com/2020/07/05/Promise/promiseeventloop.gif">
 <meta property="article:published_time" content="2020-07-05T04:00:00.000Z">
 <meta property="article:modified_time" content="2020-07-05T04:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/05/Promise/79zi452hphe7ecylhozy.gif">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/07/05/Promise/">
 
@@ -208,21 +216,75 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <p>本文翻译自技术社区dev.to，原作者<strong>Lydia Hallie</strong>。<br>原文链接：<a href="https://dev.to/lydiahallie/javascript-visualized-promises-async-await-5gke" target="_blank" rel="noopener">https://dev.to/lydiahallie/javascript-visualized-promises-async-await-5gke</a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>当我们在写JavaScript的时候，我们经常会遇到要处理一些任务嵌套的问题，比如当前的任务要依赖另外一个任务才可以继续，可以看这样一个例子，我们要拿到一张图片，对它进行压缩，设置滤镜，最后再进行保存。</p>
+<p>首先，我们使用<code>getImage</code>函数拿到我们要修改的图片，当图片成功被加载的时候，我们把它传递给<code>resizeImage</code>函数，接下来传递给<code>applyFilter</code>函数，当以上动作都完成以后，我们在控制台打印出最后成功的消息。</p>
+<p>然后我们的代码就变成了这个样子：</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png" class title="图片信息描述"></div>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>Emmm…虽然看上去代码没什么问题，但是我们用了很多恶心的回调函数<code>callback function</code>，每一个回调函数都依赖前一个回调函数。这就是我们常说的<strong>回调地狱</strong>，最后代码将会变得难以理解。</p>
+<p>不过好在ES6中引入了Promise，可以帮助我们解决上面的问题</p>
+<h2 id="Promise-语法"><a href="#Promise-语法" class="headerlink" title="Promise 语法"></a>Promise 语法</h2><p>ES6引入了Promise，在很多教程中，你会看到他们这么描述Promise</p>
+<blockquote>
+<p>“A promise is a placeholder for a value that can either resolve or reject at some time in the future” </p>
+</blockquote>
+<p>好吧…那没事了</p>
+<p>我们可以创建一个promise，使用promise构造函数，让它接受一个回调函数做参数</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/79zi452hphe7ecylhozy.gif" class title="图片信息描述"></div>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>通过观察控制台上打印出的信息，我们可以观察到，Promise是一个对象，他包含一个<strong>status</strong>和一个<strong>value</strong>。在上面的实例中，我们可以看到<code>[[PromiseStatus]]</code>的值是pending，promise的值是undefined。</p>
+<p>好吧，你可能永远也不会和这个Object直接打交道，你甚至没法直接操作<code>[[PromiseStatus]]</code>和<code>[[PromiseValue]]</code>这两个属性。不过在我们学习promise的过程中他们非常重要</p>
+<div style=" width:20%;margin:0 auto;color:grey">————————</div>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<h3 id="pic-insert-test"><a href="#pic-insert-test" class="headerlink" title="pic insert test"></a>pic insert test</h3><p><img src="/2020/07/05/Promise/79zi452hphe7ecylhozy.gif" alt="alt"><br><img src="/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png" alt="alt"></p>
-<div style="width:60%;margin:auto"><img src="/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png" class title="图片信息描述"></div>
+<p><code>PromiseStatus</code>的值（也就是state的值）可以是以下三种之一</p>
+<ul>
+<li>✅ <code>fullfilled</code>: Promise已经<code>resolved</code>，没有错误发生🥳</li>
+<li>❌ <code>rejected</code>  :Promise已经<code>rejected</code>，出现了错误</li>
+<li>⏳ <code>pending</code>   :Promise没有被resolved也没有被rejected，处在“等待”的状态</li>
+</ul>
+<p>在上面的示例中，我们直接给Promise的构造函数传了一个回调函数<code>()=&gt;{}</code>，实际上promise接受两个参数arguments。第一个参数是<code>resolve</code>这个方法是Promise应该被resolve时才触发的，与之相反的另外一个是<code>reject</code>当Promise被reject时触发。 如下图所示</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/duen4peq0bdr55cka5ya.png" class title="图片信息描述"></div>
+
+<p>好！我们现在可以摆脱Promise的<code>pending</code>状态和最后Promise的输出结果是<code>undefined</code>的状态了。当然这里要注意，这里Promise最后的值(<code>[[PromiseValue]]</code>)是我们直接传递给res和rej方法的，如下图所示</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/z0b9v0h7aiq073l5tl2l.gif" class title="图片信息描述"></div>
+
+
+<p>好，这时候让我们回到introduction部分中我们提到的那个使用了一堆恶心的回调函数来处理图片的例子。这次我们来使用Promise来简化代码，当图片顺利加载的时候<code>getImage</code>，我们给Promise一个resolve，否则的话我们给一个reject</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/loadImg.png" class title="图片信息描述"></div>
+回到控制台
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/wsu5nn26dp4elcwh764m.gif" class title="图片信息描述"></div>
+
+<p>在我们得到的value中，我们会得到三个内建(built-in)方法</p>
+<ul>
+<li>.then()：在promise被resolve后调用</li>
+<li>.catch()：在promise被reject后调用</li>
+<li>.finally()：不管是resolve和reject都会被调用</li>
+</ul>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/getfileres.png" class title="图片信息描述"></div> 
+
+<p>同时，<code>.then()</code>方法会接收我们传递给resolve的参数</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/then.gif" class title="图片信息描述"></div> 
+
+<p><code>.catch()</code>方法会接收我们传递给reject的参数</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/catch.gif" class title="图片信息描述"></div> 
+
+<p>当然，当你知道一个promise会一直resolve或者一直reject的话，你也可以直接写Promise.resolve或者Promise.reject…</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/promiseresolve.png" class title="图片信息描述"></div> 
+
+<p>好吧 语法到这里就讲完了</p>
+<div style=" width:20%;margin:0 auto;color:grey">————————</div>
+
+
+<h2 id="Microtasks和（Macro）tasks"><a href="#Microtasks和（Macro）tasks" class="headerlink" title="Microtasks和（Macro）tasks"></a>Microtasks和（Macro）tasks</h2><p>我们对于Promise已经有了一定的了解，包括怎么怎么创建一个Promise还有怎么从一个Promise中获取值。看以下代码</p>
+<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/promiseeventloop.gif" class title="图片信息描述"></div>  
+
+<p>WTF?</p>
+<p>首先控制台打印出了”Start”，这个毫无疑问。但是”End!”会先于promise的值打印出来。这个时候我们见识到了promise的真正威力，尽管JavaScript是一门<strong>单线程</strong>的语言，我们也可以使用Promise为他添加<strong>异步asynchronous</strong>行为 </p>
+<div style=" width:20%;margin:0 auto;color:grey">————————</div>
+
+<p>等等，我们在<a>译(一)JavaScript可视化：事件循环EventLoop</a>一文中，我们不也可以使用浏览器原生的方法，例如<code>setTimeout</code>来实现异步吗？</p>
+<p>Bingo!事实上，在事件循环EventLoop中，我们有两种类型的队列：<strong>(宏)任务队列</strong> <strong>(Macro)task queue</strong>和<strong>微任务队列**</strong>microtask queue<strong>。两种类型的队列分别对应着</strong>(宏)任务<strong>和</strong>微任务**，有关宏任务和微任务可以看下面的表格</p>
 
     </div>
 
@@ -303,7 +365,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pic-insert-test"><span class="nav-number">1.5.</span> <span class="nav-text">pic insert test</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-语法"><span class="nav-number">2.</span> <span class="nav-text">Promise 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Microtasks和（Macro）tasks"><span class="nav-number">3.</span> <span class="nav-text">Microtasks和（Macro）tasks</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
