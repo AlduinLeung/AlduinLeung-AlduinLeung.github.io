@@ -398,7 +398,7 @@
 <p>现在呢，浏览器遇到await关键词，浏览器引擎跳出整个async function(总不能一直suspend别人不让走吧)，执行下面的代码。注意这里的代码是全局代环境下的代码！！</p>
 <div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await4.gif" class title="图片信息描述"></div>
 
-<p>最后呢，我们现在把callstack清空了，浏览器引擎会继续按照callstacl–&gt;microtask queue–&gt;task queue的顺序来检查任务队列，myFunc剩余的部分就被推到callstack中执行了。打印出one！</p>
+<p>最后呢，我们现在把callstack清空了，浏览器引擎会继续按照callstack–&gt;microtask queue–&gt;task queue的顺序来检查任务队列，myFunc剩余的部分就被推到callstack中执行了。打印出one！</p>
 <div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await6.gif" class title="图片信息描述"></div>
 
 <p>好吧，终于结束了！注意到<code>async funcitons</code>和promise<code>.then()</code>在处理异步时候的区别了吗？<code>async funcitons</code>在使用<code>await</code>关键词的时候会阻塞代码的执行，promise<code>.then()</code>则不会</p>
@@ -421,6 +421,13 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/01/CORS/" rel="next" title="译(八)计算机科学可视化——CORS">
+      译(八)计算机科学可视化——CORS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -492,7 +499,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
