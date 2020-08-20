@@ -256,8 +256,7 @@
 <p>User agents可以通过在HTTP请求的头部中设定的Origin的值，来实安全的跨域访问✅  让我们具体来看一下：当一个跨域请求被发出的时候，客户端会自动在HTTP请求中额外添加一个头部叫做<strong>Origin</strong>。 Origin的值就是我们请求发出的地址</p>
 <div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/CORS7.gif" class title="图片信息描述"></div>
 
-<p>##💻 Server-side CORS 服务器端CORS</p>
-<p>在后端，我们要允许一个跨域请求的话，必须要HTTP头部中设置<code>Access-Control-*</code>字段。基于这些CORS响应头呢，浏览器现在就就可以访问那些被同源策略阻挡的资源啦</p>
+<h2 id="💻-Server-side-CORS-服务器端CORS"><a href="#💻-Server-side-CORS-服务器端CORS" class="headerlink" title="💻 Server-side CORS 服务器端CORS"></a>💻 Server-side CORS 服务器端CORS</h2><p>在后端，我们要允许一个跨域请求的话，必须要HTTP头部中设置<code>Access-Control-*</code>字段。基于这些CORS响应头呢，浏览器现在就就可以访问那些被同源策略阻挡的资源啦</p>
 <p>当然，CORS头部可以设置很多，最关键的字段就是<code>Access-Control-Allow-Origin</code>，只有设置了这个，才算是设置了允许跨域访问，这个头部的值代表的含义就是<strong>我们要允许哪些地址来请求资源</strong></p>
 <p>例如，还是上面的例子，我们现在是一个服务器，然后<a><a href="https://mywebsite.com" target="_blank" rel="noopener">https://mywebsite.com</a></a>要来访问我们的资源了，我们就在HTTP response中把<a><a href="https://mywebsite.com" target="_blank" rel="noopener">https://mywebsite.com</a></a>加到<code>Access-Control-Allow-Origin</code>头部中</p>
 <div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors8.gif" class title="图片信息描述"></div>
@@ -397,7 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#✋🏼-Same-Origin-Policy同源策略"><span class="nav-number">2.</span> <span class="nav-text">✋🏼 Same-Origin Policy同源策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🔥-Client-side-CORS-客户端CORS"><span class="nav-number">3.</span> <span class="nav-text">🔥 Client-side CORS 客户端CORS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🚀-Preflighted-Requests"><span class="nav-number">4.</span> <span class="nav-text">🚀 Preflighted Requests</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🍪-Credentials"><span class="nav-number">5.</span> <span class="nav-text">🍪 Credentials</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#✋🏼-Same-Origin-Policy同源策略"><span class="nav-number">2.</span> <span class="nav-text">✋🏼 Same-Origin Policy同源策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🔥-Client-side-CORS-客户端CORS"><span class="nav-number">3.</span> <span class="nav-text">🔥 Client-side CORS 客户端CORS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#💻-Server-side-CORS-服务器端CORS"><span class="nav-number">4.</span> <span class="nav-text">💻 Server-side CORS 服务器端CORS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🚀-Preflighted-Requests"><span class="nav-number">5.</span> <span class="nav-text">🚀 Preflighted Requests</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#🍪-Credentials"><span class="nav-number">6.</span> <span class="nav-text">🍪 Credentials</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
