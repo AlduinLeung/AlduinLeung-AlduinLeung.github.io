@@ -217,90 +217,14 @@
 
 <p>这次我们拿到了CORS错误，让我们来研究一下~</p>
 <div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-<h2 id="✋🏼-Same-Origin-Policy同源策略"><a href="#✋🏼-Same-Origin-Policy同源策略" class="headerlink" title="✋🏼 Same-Origin Policy同源策略"></a>✋🏼 Same-Origin Policy同源策略</h2><p>web强制实施的一种机制叫做<strong>same-origin policy</strong>同源策略。在默认情况下，我们只能访问处于same origin同源的资源，例如在刚刚的例子中，我们就可以访问<a><a href="https://mywebsite.com/image1.png" target="_blank" rel="noopener">https://mywebsite.com/image1.png</a></a></p>
-<p>一个跨域资源的定义，是当它处于<strong>不同(子)域名(sub)domain</strong>、<strong>不同协议protocal</strong>、<strong>不同端口port</strong></p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors3.png" class title="图片信息描述"></div>
-
-<p>那么，为什么我们要使用同源机制呢？同源机制为什么存在呢？当你不小心点击了你朋友在facebook上发的带有病毒的链接时，这个链接会把你重定向到一个病毒网站，这个病毒网站里嵌入有ifram标签，然后呢，他会通过cookie成功登陆到你的银行账户里。</p>
-<p>然后这个病毒网站的开发者可以操作银行网站的DOM内容然后把钱发送到他们的账户里</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors4.gif" class title="图片信息描述"></div>
-
-<p>好吧。。这是一个挺严重的安全问题。但幸运的是，同源策略可以帮助我们解决这个问题。这个策略可以确保我们只能访问同一个源下面的资源</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors5.gif" class title="图片信息描述"></div>
-
-<p>如上图所示，当源<a><a href="http://www.evilwebsite.com" target="_blank" rel="noopener">www.evilwebsite.com</a></a>尝试去访问来自<a><a href="http://www.bank.com" target="_blank" rel="noopener">www.bank.com</a></a>的跨域资源时，同源策略阻止了这一行为。</p>
-<h2 id="🔥-Client-side-CORS-客户端CORS"><a href="#🔥-Client-side-CORS-客户端CORS" class="headerlink" title="🔥 Client-side CORS 客户端CORS"></a>🔥 Client-side CORS 客户端CORS</h2><div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors6.gif" class title="图片信息描述"></div>
-
-<p>Emmm…但是我们经常要请求跨域资源，难道我们每次请求跨域资源的时候都要与后端API交互来获取数据吗？为了让跨域请求变得更安全，浏览器有一种机制叫做<strong>CORS</strong>🥳CORS是<strong>Cross-Origin Resource Sharing</strong>的缩写。</p>
-<p>User agents可以通过在HTTP请求的头部中设定的Origin的值，来实安全的跨域访问✅  让我们具体来看一下：当一个跨域请求被发出的时候，客户端会自动在HTTP请求中额外添加一个头部叫做<strong>Origin</strong>。 Origin的值就是我们请求发出的地址</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/CORS7.gif" class title="图片信息描述"></div>
-
-<p>##💻 Server-side CORS 服务器端CORS</p>
-<p>在后端，我们要允许一个跨域请求的话，必须要HTTP头部中设置<code>Access-Control-*</code>字段。基于这些CORS响应头呢，浏览器现在就就可以访问那些被同源策略阻挡的资源啦</p>
-<p>当然，CORS头部可以设置很多，最关键的字段就是<code>Access-Control-Allow-Origin</code>，只有设置了这个，才算是设置了允许跨域访问，这个头部的值代表的含义就是<strong>我们要允许哪些地址来请求资源</strong></p>
-<p>例如，还是上面的例子，我们现在是一个服务器，然后<a><a href="https://mywebsite.com" target="_blank" rel="noopener">https://mywebsite.com</a></a>要来访问我们的资源了，我们就在HTTP response中把<a><a href="https://mywebsite.com" target="_blank" rel="noopener">https://mywebsite.com</a></a>加到<code>Access-Control-Allow-Origin</code>头部中</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors8.gif" class title="图片信息描述"></div>
-
-<p>OK，现在这个被添加过得response已经发送回客户端了，此时同源策略就不会限制我们访问在<a><a href="https://api.website.com" target="_blank" rel="noopener">https://api.website.com</a></a>上的资源了</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors9.gif" class title="图片信息描述"></div>
-
-<p>CORS机制会检查response中<code>Access-Control-Allow-Origin</code>的值是否与request中<code>Origin</code>的值是否匹配(还记得我们一开始发送请求的时候携带了Origin的值了吗)</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors10.gif" class title="图片信息描述"></div>
-
-<p>完美！但是，当我们发送请求一个请求，同时这个请求的origin并没有写在<code>Access-Control-Allow-Origin</code>中的时候，CORS就会报出一个错误。以上这就是我们以前碰到这个错误的具体原因了</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors11.gif" class title="图片信息描述"></div>
-
-<blockquote>
-<p>当然，如果你愿意的话，你也可以直接使用 * 来允许所有的Origin来请求资源，但是真的有人这么做吗？不会吧不会吧，不会真的有人这么干吧</p>
-</blockquote>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-
-<p><code>Access-Control-Allow-Origin</code>只是诸多CORS头部中的一种，服务端也可以扩充CORS来禁止某些特定的请求</p>
-<p>另外一个广为人知的就是<code>Access-Control-Allow-Methods</code>，CORS只会允许已经添加的跨域请求方法。如下图，服务端只允许POST、GET、PUT，其他像PATCH和DELETE就会被阻止</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors13.gif" class title="图片信息描述"></div>
-
-
-<p>咦？说到PUT、PATCH和DELETE，CORS对这几个请求其实有不处理的方法。这些不同寻常的请求被叫做一个preflight request(预检请求)</p>
-<blockquote>
-<p>preflight:reparing for or preliminary to flight (as of an aircraft ) 芜湖~就是起飞前的预检嘛</p>
-</blockquote>
-<h2 id="🚀-Preflighted-Requests"><a href="#🚀-Preflighted-Requests" class="headerlink" title="🚀 Preflighted Requests"></a>🚀 Preflighted Requests</h2><p>CORS有两种不同类型的请求，一个simple request和一个preflighted request。 不管一个请求是简单请求还是一个预检请求，他们取决于请求中所带有的一些值(一句没有用的废话)</p>
-<p>简单请求就是当一个请求使用<code>GET</code>或者<code>PUT</code>方法，并且没有其他自定义头部的时候。其他请求，像带有<code>PUT</code><code>PATCH</code><code>DELETE</code>的，就是预检请求</p>
-<blockquote>
-<p>如果想要了解一个简单请求需要满足哪些条件的话，请查看<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests" target="_blank" rel="noopener">MDN</a></p>
-</blockquote>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-<p>在我们实际的请求发送以前，客户端会生成一个预检请求，这个预检请求会携带一些我们实际要发送请求的信息，然后这些信息会被添加到<code>Access-Control-Request-*</code>头部中🔥</p>
-<blockquote>
-<p>注意！上面我们说的服务端的response中是带的是<code>Access-Control-Allow-Origin</code>，而这里客户端发送的request中带的是<code>Access-Control-Request-*</code>注意区别</p>
-</blockquote>
-<p>这样，这个预检请求就会告诉服务端我们将要发出的请求是什么样的，request的方法是什么啊？还有没有其他头部了啊？可以看下图：</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors14.gif" class title="图片信息描述"></div>
-
-<p>然后服务端接收到预检请求，返回一个空的带有服务端CORS头部信息的HTTP response。浏览器接收到以后，会检查HTTP请求是不是被允许发送✅</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors15.gif" class title="图片信息描述"></div>
-
-<p>好，被允许了！这种情况下，浏览器就会发送真实请求，然后服务端给我们返回要用的数据</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors16.gif" class title="图片信息描述"></div>
-
-<p>如果不是上面的情况的话，CORS就会阻止预检请求的发送，那么真实的请求也就永远不会被发送✋🏼 预检请求可以阻止我们在没有经过CORS允许的情况下就去获取修改服务器的资源这种行为，对于服务器来说，也可以阻止存在安全隐患的跨域请求</p>
-<blockquote>
-<p>💡 为了减少不必要请求的次数，减少服务器的压力。我们可以设置<code>Access-Control-Max-Age</code>头部来缓存我们对于预检请求的相应。浏览器就没必要重新再发一个新的预检请求了</p>
-</blockquote>
-<h2 id="🍪-Credentials"><a href="#🍪-Credentials" class="headerlink" title="🍪 Credentials"></a>🍪 Credentials</h2><p>Cookies默认只会在同源请求中发送，当然我们有时候也想把它跨域使用(废话)，比如说我们可能想要服务器识别他们的用户这样。</p>
-<p>在服务端我们可以在response的CORS头部中添加<code>Access-Control-Allow-Credentials</code>来跨域使用cookies</p>
-<p>同时，在客户端中我们request时要携带<code>withCredentials</code>字段并设置为<code>true</code></p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors17.gif" class title="图片信息描述"></div>
-
-<p>OK，我们现在就可以跨域使用cookie了 </p>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-<p>尽管，CORS给我们带来了许多沮丧的错误。但是他也能让我们愉快的在浏览器里使用跨域请求✨</p>
-<p>CORS和同源策略包含的内容还有很多很多，这篇博客仅仅是一个介绍，如果你愿意的话，可以看<a href="https://livebook.manning.com/book/cors-in-action/part-1/" target="_blank" rel="noopener">这篇</a>和<a href="https://www.w3.org/wiki/CORS_Enabled" target="_blank" rel="noopener">the W3 spec</a>深入了解💪🏼</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/01/CORS/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -364,177 +288,15 @@
 <div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png" class title="图片信息描述"></div>
 
 <p>Emmm…虽然看上去代码没什么问题，但是我们用了很多恶心的回调函数<code>callback function</code>，每一个回调函数都依赖前一个回调函数。这就是我们常说的<strong>回调地狱</strong>，最后代码将会变得难以理解。</p>
-<p>不过好在ES6中引入了Promise，可以帮助我们解决上面的问题</p>
-<h2 id="Promise-语法"><a href="#Promise-语法" class="headerlink" title="Promise 语法"></a>Promise 语法</h2><p>ES6引入了Promise，在很多教程中，你会看到他们这么描述Promise</p>
-<blockquote>
-<p>“A promise is a placeholder for a value that can either resolve or reject at some time in the future” </p>
-</blockquote>
-<p>好吧…那没事了</p>
-<p>我们可以创建一个promise，使用promise构造函数，让它接受一个回调函数做参数</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/79zi452hphe7ecylhozy.gif" class title="图片信息描述"></div>
-
-
-<p>通过观察控制台上打印出的信息，我们可以观察到，Promise是一个对象，他包含一个<strong>status</strong>和一个<strong>value</strong>。在上面的实例中，我们可以看到<code>[[PromiseStatus]]</code>的值是pending，promise的值是undefined。</p>
-<p>好吧，你可能永远也不会和这个Object直接打交道，你甚至没法直接操作<code>[[PromiseStatus]]</code>和<code>[[PromiseValue]]</code>这两个属性。不过在我们学习promise的过程中他们非常重要</p>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-<p><code>PromiseStatus</code>的值（也就是state的值）可以是以下三种之一</p>
-<ul>
-<li>✅ <code>fullfilled</code>: Promise已经<code>resolved</code>，没有错误发生🥳</li>
-<li>❌ <code>rejected</code>  :Promise已经<code>rejected</code>，出现了错误</li>
-<li>⏳ <code>pending</code>  :Promise没有被resolved也没有被rejected，处在“等待”的状态</li>
-</ul>
-<p>在上面的示例中，我们直接给Promise的构造函数传了一个回调函数<code>()=>{}</code>，实际上promise接受两个参数arguments。第一个参数是<code>resolve</code>这个方法是Promise应该被resolve时才触发的，与之相反的另外一个是<code>reject</code>当Promise被reject时触发。 如下图所示</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/duen4peq0bdr55cka5ya.png" class title="图片信息描述"></div>
-
-<p>好！我们现在可以摆脱Promise的<code>pending</code>状态和最后Promise的输出结果是<code>undefined</code>的状态了。当然这里要注意，这里Promise最后的值(<code>[[PromiseValue]]</code>)是我们直接传递给res和rej方法的，如下图所示</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/z0b9v0h7aiq073l5tl2l.gif" class title="图片信息描述"></div>
-
-
-<p>好，这时候让我们回到introduction部分中我们提到的那个使用了一堆恶心的回调函数来处理图片的例子。这次我们来使用Promise来简化代码，当图片顺利加载的时候<code>getImage</code>，我们给Promise一个resolve，否则的话我们给一个reject</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/loadImg.png" class title="图片信息描述"></div>
-回到控制台
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/wsu5nn26dp4elcwh764m.gif" class title="图片信息描述"></div>
-
-<p>在我们得到的value中，我们会得到三个内建(built-in)方法</p>
-<ul>
-<li>.then()：在promise被resolve后调用</li>
-<li>.catch()：在promise被reject后调用</li>
-<li>.finally()：不管是resolve和reject都会被调用</li>
-</ul>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/getfileres.png" class title="图片信息描述"></div> 
-
-<p>同时，<code>.then()</code>方法会接收我们传递给resolve的参数</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/then.gif" class title="图片信息描述"></div> 
-
-<p><code>.catch()</code>方法会接收我们传递给reject的参数</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/catch.gif" class title="图片信息描述"></div> 
-
-<p>当然，当你知道一个promise会一直resolve或者一直reject的话，你也可以直接写Promise.resolve或者Promise.reject…</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/promiseresolve.png" class title="图片信息描述"></div> 
-
-<p>好吧 语法到这里就讲完了</p>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-
-<h2 id="Microtasks和（Macro）tasks"><a href="#Microtasks和（Macro）tasks" class="headerlink" title="Microtasks和（Macro）tasks"></a>Microtasks和（Macro）tasks</h2><p>我们对于Promise已经有了一定的了解，包括怎么怎么创建一个Promise，还有怎么从一个Promise中取值。那么看以下代码</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/promiseeventloop.gif" class title="图片信息描述"></div>  
-
-<p>WTF?</p>
-<p>首先控制台打印出了”Start”，这个毫无疑问。但是”End!”会先于promise的值打印出来。这个时候我们见识到了promise的真正威力，尽管JavaScript是一门<strong>单线程</strong>的语言，我们也可以使用Promise为他添加<strong>异步asynchronous</strong>行为 </p>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-
-<p>等等，我们在<a>译(一)JavaScript可视化：事件循环EventLoop</a>一文中，我们不也可以使用浏览器原生的方法，例如<code>setTimeout</code>来实现异步吗？</p>
-<p>Bingo!事实上，在事件循环EventLoop中，我们有两种类型的队列：<strong>(宏)任务队列</strong> <strong>(Macro)task queue</strong>和<strong>微任务队列</strong><strong>microtask queue</strong>。两种类型的队列分别对应着<strong>(宏)任务</strong>和<strong>微任务</strong>，有关宏任务和微任务的具体种类如下：</p>
-<table>
-  <tbody><tr>
-    <td>
-        (Macro)task
-    </td>
-     <td>
-         <code>setTimeout</code> | <code>setInterval</code> | <code>setImmediate</code>
-     </td>
-     </tr>
-     <tr>
-     <td>
-         Microtask
-     </td>
-      <td>
-          <code>process.nextTick</code> | <code>Promise callback</code> | <code>queueMicrotask</code>
-      </td>
- </tr>
-</tbody></table>
-
-<p>我们可以看到&lt;/、code&gt;Promise在微任务的分类里，当一个Promise被resolve并且调用了它<code>then()</code>、<code>catch()</code>、<code>finally()</code>的时候，他们会被添加到微任务队列中，这就意味着这些带有<code>then()</code>、<code>catch()</code>、<code>finally()</code>的回调函数不会立即执行，这就是为什么Promise可以用来做异步的原因</p>
-<p>那么，什么时候执行带有<code>then()</code>、<code>catch()</code>、<code>finally()</code>的回调函数呢？事件循环机制给不同的task有不同的优先级：</p>
-<ol>
-<li>所有当前正在call stack调用栈中执行的函数执行完毕。当他们return返回一个值的时候，他们会被推出栈。</li>
-<li>当call stack调用栈为空的时候，所有在微任务队列MicroTask中的微任务会被一个一个推入call stack调用栈执行(此时，MicroTask微任务背身也有可能return出新的微任务，有可能造成无限的微任务循环<strong>infinite microtask loop)</strong></li>
-<li>当目前的call stack和microtask queue都为空的时候，事件循环机制会检查是否有任务留在宏任务队列(Macro)task queue中，遗留下来的宏任务会被推入call stack调用栈——&gt;执行——&gt;推出</li>
-</ol>
-<div style="width:20%;margin:0 auto;color:grey">————————</div>
-
-<p>好吧，说起来有点复杂。我们来看一个简单的例子</p>
-<ul>
-<li><p><code>Task1</code>在JS被执行的时候立即添加到了队列里</p>
-</li>
-<li><p><code>Task2</code> <code>Task3</code> <code>Task4</code>：微任务，例如是一个Promise的then方法，或者是一个使用<code>queueMicrotask</code>添加到队列里的任务</p>
-</li>
-<li><p><code>Task5</code> <code>Task6</code>：宏任务，例如<code>setTimeout</code>或者<code>setImmediate</code>回调函数</p>
-</li>
-</ul>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/micro.gif" class title="图片信息描述"></div>  
-
-<p>首先，Task1被执行完成，然后呢浏览器引擎检查微任务队列，当微任务队列里所有的任务被执行完并且推出后，浏览器检查宏任务队列。然后把它压进call stack中。最后所有任务执行完毕</p>
-<p>…<br>太啰嗦了，我们来看点真正的代码吧！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/micro2.png" class title="图片信息描述"></div>  
-
-<p>在上面这份代码中，我们有宏任务<code>setTimeout</code>，微任务promise回调函数<code>.then()</code>,下面我们将一步一步分析代码。</p>
-<blockquote>
-<p>值得注意的是，这里为了方便演示概念，我们使用<code>console.log</code>、<code>setTimeout</code>、<code>Promise.resolve</code>。这些内部的方法实际上不会出现在callstack中，所以当你在使用的debugger的时候如果没看到他们的话，请不要感到困惑🙂</p>
-</blockquote>
-<p>为了方便读者理解，下面的文章中关键概念统一使用英文</p>
-<ul>
-<li>call stack 调用栈</li>
-<li>MicroTask 微任务 / MicroTask queue微任务队列</li>
-<li>MacroTask 宏任务 / MacroTask queue(宏)任务队列</li>
-</ul>
-<p>第一步，浏览器引擎遇到了<code>console.log</code>,他会直接被添加到call stack中，同时在控制台打印出Start！执行完毕后，浏览器引擎将他推出call stack，此时call stack清空</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev1.gif" class title="图片信息描述"></div>  
-代码继续运行，遇到了<code>setTimeout</code>。<code>setTimeout</code>是浏览器的原生方法：它的callback回调函数<code>(()=>console.log('In timeouot'))</code>将会被添加到WEB API队列中，直到计时器到期。虽然我们给计时器设置的时间是0，<strong>他依然被浏览器引擎push到WEB API中</strong>，随后被添加到MacroTask queue。
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev3.gif" class title="图片信息描述"></div>
-接下来，浏览器遇到了<code>Promise.resolve()</code>方法。他的<code>then</code>回调函数被添加到micro queue中
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev2.gif" class title="图片信息描述"></div>
-最后代码执行到最后，遇到<code>console.log('End!')</code>，压入call stack直接执行，随后被推出。
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev4.gif" class title="图片信息描述"></div>
-
-<p>此时，call stack是空的，浏览器引擎会从microtask queue中寻找任务，并把它压到call stack中。<code>.then()</code>函数接收到<code>Promise.resolve</code>中的参数，在控制台上打印出Promise！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev5.gif" class title="图片信息描述"></div>
-
-<p>清空了microtask queue后(当然此时call stack也是空的)，我们终于要检查MacroTask queue了。<code>setTimeout</code>被压到call stack中，打印出Timeout！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ev6gif.gif" class title="图片信息描述"></div>
-
-<p>至此，一次完整的事件循环结束</p>
-<div style="width:20%;margin:0 auto;color:grey">————————</div>
-
-<h2 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h2><p>ES7引入了一个解决在JavaScript中实现异步的新办法使得使用promise更简单，这就是我们要介绍的<code>async</code>和<code>await</code>关键词。回顾之前，要记得我们之前使用<code>new Promise(() => {})</code><code>Promise.resolve</code>或者是<code>Promise.reject</code>创建的promise。</p>
-<p>现在，我们可以在function前面使用async关键词直接返回一个promise。不必再写promise</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/async1.png" class title="图片信息描述"></div>
-
-<p>但是，async真正的威力是在await关键字，他能暂停异步函数的执行直到await后面的值返回一个是resolved状态的promise。如果我们想要拿到这个resolve promise的值(指被async包裹的整个关键词)，就像我们之前使用.then方法那样。我们可以通过给await后面的的变量直接赋成promise.resolved来实现</p>
-<p>说起来有点抽象了，那来看个代码吧！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/async2.gif" class title="图片信息描述"></div>
-
-<p>WTF again?</p>
-<div style="width:20%;margin:0 auto;color:grey">————————</div>
-首先，浏览器引擎遇到了console.log('Before function')，推到call stack中，执行完毕后清空call stack。这点毫无疑问，因为虽然定义了myFunc()但是并没有执行
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await1.gif" class title="图片信息描述"></div>
-
-<p>然后，浏览器引擎碰到myFunc,执行myFunc。在myFunc函数体内部，我们遇到了另外一个<code>console.log('In function')</code>，推到call stack中，打印输出。<strong>这里请注意，await会阻塞后面的代码执行，但是不会阻塞await关键词前面的代码执行。所以会直接console.log输出</strong></p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await2.gif" class title="图片信息描述"></div>
-好，myFunc函数继续执行。在第二行我们终于见到了<code>await</code>关键词🎉
-
-
-<p>好！代码运行到这里，我们的callstack中有myfunc()，<strong>浏览器会先执行await关键词后面的代码！！碰到one(),会执行one()！！这里很重要！！注意看图！！</strong> 因为下面的代码被await阻塞(suspend)。浏览器引擎把myFunc剩下的部分压入到microtask queue中，注意这里，是微任务队列，而不是task queue。</p>
-<blockquote>
-<p>附上原文：<br>The first thing that happens is that the value that gets awaited gets executed: the function one in this case. It gets popped onto the call stack, and eventually returns a resolved promise. Once the promise has resolved and one returned a value, the engine encounters the await keyword.</p>
-</blockquote>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await3.gif" class title="图片信息描述"></div>
-
-<p>现在呢，浏览器遇到await关键词，浏览器引擎跳出整个async function(总不能一直suspend别人不让走吧)，执行下面的代码。注意这里的代码是全局代环境下的代码！！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await4.gif" class title="图片信息描述"></div>
-
-<p>最后呢，我们现在把callstack清空了，浏览器引擎会继续按照callstack–&gt;microtask queue–&gt;task queue的顺序来检查任务队列，myFunc剩余的部分就被推到callstack中执行了。打印出one！</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/await6.gif" class title="图片信息描述"></div>
-
-<p>好吧，终于结束了！注意到<code>async funcitons</code>和promise<code>.then()</code>在处理异步时候的区别了吗？<code>async funcitons</code>在使用<code>await</code>关键词的时候会阻塞代码的执行，promise<code>.then()</code>则不会</p>
-<p>希望读者以后在处理JavaScript异步编程的时候可以少一点”unexpected” or “unpredictable” 的错误哦~</p>
-<div style="width:20%;margin:0 auto;color:grey">————————</div>
-
-
-<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>最后来看道面试题吧，请问下面的代码输出结果是什么？ </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 start'</span>) </span><br><span class="line">    <span class="keyword">await</span> async2()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 end'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async2'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>)   </span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line">async1()</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise1'</span>)</span><br><span class="line">    resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>)</span><br><span class="line"></span><br><span class="line">_______________答案______________</span><br><span class="line"><span class="number">1.</span> script start  ---</span><br><span class="line"><span class="number">2.</span> async1 start  ---遇到async1() 执行函数体内的代码.</span><br><span class="line"><span class="number">3.</span> async2        ---执行async2()后，碰到<span class="keyword">await</span>，跳出到全局环境，把剩余代码压入微任务队列</span><br><span class="line"><span class="number">4.</span> promise1      ---碰到<span class="built_in">Promise</span>.resolved，直接输出，把then压入微任务队列</span><br><span class="line"><span class="number">5.</span> script end    ---最后一行全局task执行完毕</span><br><span class="line"></span><br><span class="line"><span class="comment">//此时callstack被清空</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//浏览器引擎查找微任务队列</span></span><br><span class="line"><span class="number">1.</span> async1 end    </span><br><span class="line"><span class="number">2.</span> promise2 </span><br><span class="line"></span><br><span class="line"><span class="comment">//清空微任务队列</span></span><br><span class="line"><span class="comment">//尝试触发dom渲染，执行宏任务</span></span><br><span class="line"></span><br><span class="line"><span class="number">8.</span> setTimeout</span><br></pre></td></tr></table></figure>
-
+<p>不过好在ES6中引入了Promise，可以帮助我们解决上面的问题<br></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/05/Promise/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
