@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","display_updated":true,"padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Hope for the best and prepare for the worst :）">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Alduinleung&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="最近在复盘代码的过程中思考了这个问题，顺便复习bind()的用法和JavaScript中this指向的问题 在我们使用React进行开发的时候，我们必须使用.bind(this)方法在组件的构造函数中把事件处理函数绑定到组价实例上，例如这样： 123456789101112131415161718192021222324class Foo extends React.Component&amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我们为什么要在React中使用bind()">
+<meta property="og:url" content="http://yoursite.com/2020/07/01/Inheritance/index.html">
 <meta property="og:site_name" content="Alduinleung&#39;s Blog">
-<meta property="og:description" content="Hope for the best and prepare for the worst :）">
+<meta property="og:description" content="最近在复盘代码的过程中思考了这个问题，顺便复习bind()的用法和JavaScript中this指向的问题 在我们使用React进行开发的时候，我们必须使用.bind(this)方法在组件的构造函数中把事件处理函数绑定到组价实例上，例如这样： 123456789101112131415161718192021222324class Foo extends React.Component&amp;#123;">
+<meta property="og:image" content="http://yoursite.com/2020/07/01/Inheritance/react-event.jpg">
+<meta property="article:published_time" content="2020-07-01T11:44:23.000Z">
+<meta property="article:modified_time" content="2020-07-01T11:44:23.000Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/01/Inheritance/react-event.jpg">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/07/01/Inheritance/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Alduinleung's Blog</title>
+  <title>我们为什么要在React中使用bind() | Alduinleung's Blog</title>
   
 
 
@@ -158,160 +162,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/01/CORS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="Hope for the best and prepare for the worst :）">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alduinleung's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/01/CORS/" class="post-title-link" itemprop="url">译(八)计算机科学可视化——CORS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-08-01T00:00:00+08:00">2020-08-01</time>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文译自技术社区dev.to 原作者 <strong>Lydia Hallie</strong><br>原文链接：<a href="https://dev.to/lydiahallie/cs-visualized-cors-5b8h" target="_blank" rel="noopener">https://dev.to/lydiahallie/cs-visualized-cors-5b8h</a></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>每一个开发人员都会在控制台里碰到这种烦人的问题<code>Access to fetched has been blocked by CORS policy</code>😬 尽管我们有一万种方法可以解决这种错误，但是呢，让我们今天来看一下CORS的机制是怎么运作的</p>
-<blockquote>
-<p>❗️在这篇博客中我将不会讲解HTTP的基础细节</p>
-</blockquote>
-<p>在前端，我们经常有要展示存储在其他地方数据的需求。在我们渲染数据以前，浏览器要先向服务器发送一个HTTP请求去获取数据。</p>
-<p>让我们看一下这个过程，我们要在<a><a href="http://www.mywebsite.com" target="_blank" rel="noopener">www.mywebsite.com</a></a>上获取一些用户的信息，这些信息储存在<a>api.website.com</a>上</p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors1.gif" class title="图片信息描述"></div>
-
-<p>OK了！我们刚刚向服务器发送了一个HTTP请求，然后我们拿到了我们要请求的JSON数据</p>
-<p>好了，让我们再试一次，不同的是，我们这次请求的是另外一个域名<a><a href="http://www.anotherdomain.com" target="_blank" rel="noopener">www.anotherdomain.com</a></a></p>
-<div style="width:80%;margin:auto"><img src="/2020/08/01/CORS/cors2.gif" class title="图片信息描述"></div>
-
-<p>这次我们拿到了CORS错误，让我们来研究一下~</p>
-<div style=" width:20%;margin:0 auto;color:grey">————————</div>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/01/CORS/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/05/Promise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="Hope for the best and prepare for the worst :）">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alduinleung's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/05/Promise/" class="post-title-link" itemprop="url">译(六) JavaScript可视化：Promise & Async/Await</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-05 12:00:00" itemprop="dateCreated datePublished" datetime="2020-07-05T12:00:00+08:00">2020-07-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文翻译自技术社区dev.to，原作者<strong>Lydia Hallie</strong>。<br>原文链接：<a href="https://dev.to/lydiahallie/javascript-visualized-promises-async-await-5gke" target="_blank" rel="noopener">https://dev.to/lydiahallie/javascript-visualized-promises-async-await-5gke</a></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>当我们在写JavaScript的时候，我们经常会遇到要处理一些任务嵌套的问题，比如当前的任务要依赖另外一个任务才可以继续，可以看这样一个例子，我们要拿到一张图片，对它进行压缩，设置滤镜，最后再进行保存。</p>
-<p>首先，我们使用<code>getImage</code>函数拿到我们要修改的图片，当图片成功被加载的时候，我们把它传递给<code>resizeImage</code>函数，接下来传递给<code>applyFilter</code>函数，当以上动作都完成以后，我们在控制台打印出最后成功的消息。</p>
-<p>然后我们的代码就变成了这个样子：</p>
-<div style="width:80%;margin:auto"><img src="/2020/07/05/Promise/ixceqsql5hpdq8txx43s.png" class title="图片信息描述"></div>
-
-<p>Emmm…虽然看上去代码没什么问题，但是我们用了很多恶心的回调函数<code>callback function</code>，每一个回调函数都依赖前一个回调函数。这就是我们常说的<strong>回调地狱</strong>，最后代码将会变得难以理解。</p>
-<p>不过好在ES6中引入了Promise，可以帮助我们解决上面的问题<br></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/05/Promise/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
@@ -327,10 +181,9 @@
       <meta itemprop="name" content="Alduinleung's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/01/Inheritance/" class="post-title-link" itemprop="url">我们为什么要在React中使用bind()</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          我们为什么要在React中使用bind()
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -353,7 +206,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>最近在复盘代码的过程中思考了这个问题，顺便复习bind()的用法和JavaScript中this指向的问题</p>
+        <p>最近在复盘代码的过程中思考了这个问题，顺便复习bind()的用法和JavaScript中this指向的问题</p>
 <p>在我们使用React进行开发的时候，我们必须使用<strong>.bind(this)</strong>方法在组件的构造函数中把事件处理函数绑定到组价实例上，例如这样：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span></span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>( props )&#123;</span><br><span class="line">    <span class="keyword">super</span>( props );</span><br><span class="line">    <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  handleClick(event)&#123;</span><br><span class="line">    <span class="comment">// your event handling logic</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  render()&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;button type=<span class="string">"button"</span> </span><br><span class="line">      onClick=&#123;<span class="keyword">this</span>.handleClick&#125;&gt;</span><br><span class="line">      Click Me</span><br><span class="line">      &lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">ReactDOM.render(</span></span><br><span class="line"><span class="regexp">  &lt;Foo /</span>&gt;,</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"app"</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
@@ -430,21 +283,30 @@ React在处理事件的时候要经过事件注册和事件触发两个阶段，
 <p>当我们把事件处理函数的<code>this</code>绑定到组件实例上的时候，我们可以就可以把事件处理函数当做回调函数直接传递过去而不用担心丢失他的上下文。</p>
 <p>箭头函数就不用担心这个问题了，因为他使用的是词法作用域(lexical)，会把this自动绑定到他定义的作用域</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/05/Promise/" rel="next" title="译(六) JavaScript可视化：Promise & Async/Await">
+      译(六) JavaScript可视化：Promise & Async/Await <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -497,6 +359,7 @@ React在处理事件的时候要经过事件注册和事件触发两个阶段，
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#这其实是JavaScript而不是React的锅"><span class="nav-number">1.</span> <span class="nav-text">这其实是JavaScript而不是React的锅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript中this的指向问题"><span class="nav-number">2.</span> <span class="nav-text">JavaScript中this的指向问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认绑定-Default-Binding"><span class="nav-number">2.1.</span> <span class="nav-text">默认绑定 Default Binding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implicit-Binding-隐式绑定"><span class="nav-number">2.2.</span> <span class="nav-text">Implicit Binding 隐式绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Explicit-Hard-Binding-显示绑定"><span class="nav-number">2.3.</span> <span class="nav-text">Explicit Hard Binding 显示绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用JavaScript重现React中的情形"><span class="nav-number">2.4.</span> <span class="nav-text">用JavaScript重现React中的情形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更深层次的原因，React为什么会把this给搞丢呢"><span class="nav-number">2.5.</span> <span class="nav-text">更深层次的原因，React为什么会把this给搞丢呢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定this的其他方法"><span class="nav-number">2.6.</span> <span class="nav-text">绑定this的其他方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
